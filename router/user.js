@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {userModel, validateProduct} = require('../models/user');
+const {userModel} = require('../models/user');
 
 router.get('/login', async (req, res) => {
     res.render('user_login');
