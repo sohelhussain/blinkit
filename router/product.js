@@ -2,10 +2,12 @@ const express = require('express');
 const router = express.Router();
 const {productModel,validateProduct} = require('../models/product');
 const {categoryModel} = require('../models/category');
+const {cartModel} = require('../models/cart');
 const upload = require('../config/multer_config');
 const {validateAdmin, userIsLoggedIn} = require('../middlewares/admin')
 
 router.get('/', userIsLoggedIn,async (req, res) => {
+    let somethingInCart = false;
     const results = await productModel.aggregate([
         {
             // Group by 'category' and push product details to an array
@@ -23,6 +25,8 @@ router.get('/', userIsLoggedIn,async (req, res) => {
         }
     ]);
 
+    let cart = await cartModel.findOne({user: req.session.passport.user})
+    if (cart && cart.products.length > 0) somethingInCart = true;
 
     let rnproducts = await productModel.aggregate([{$sample: {size:3}}]) // Get all random products
 
@@ -31,7 +35,9 @@ router.get('/', userIsLoggedIn,async (req, res) => {
         acc[curr._id] = curr.products; // Use category name as key
         return acc;
     }, {});
-    res.render('index',{products: formattedResult, rnproducts, somethingInCart: true});
+
+    let cartCount = (cart && cart.products && cart.products.length) ? cart.products.length : "0";
+    res.render('index',{products: formattedResult, rnproducts, somethingInCart, cartCount});
 });
 
 router.get('/delete/:id',validateAdmin, async(req, res) => {
