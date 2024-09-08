@@ -6,7 +6,7 @@ const {productModel} = require('../models/product');
 const {categoryModel} = require('../models/category')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const validateAdmin = require('../middlewares/admin');
+const {validateAdmin} = require('../middlewares/admin');
 
 
 if(typeof process.env.NODE_ENV !== undefined && process.env.NODE_ENV === 'development'){

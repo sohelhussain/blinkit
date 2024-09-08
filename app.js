@@ -10,7 +10,9 @@ const db = require("./config/mongoose");
 const adminRouter = require("./router/admin");
 const productRouter = require("./router/product");
 const categoriesRouter = require("./router/category");
+const usersRouter = require("./router/user");
 const cookieParser = require('cookie-parser');
+const passport = require('passport');
 
 
 
@@ -27,6 +29,8 @@ app.use(
     secret: process.env.SESSION_SECRET,
   })
 );
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(cookieParser());
 
 
@@ -35,6 +39,7 @@ app.use("/auth", authRouter);
 app.use("/admin", adminRouter);
 app.use("/products", productRouter);
 app.use("/categories", categoriesRouter);
+app.use("/users", usersRouter);
 
 app.listen(3000, () =>
   console.log(`server are listening http://localhost:3000/`)
