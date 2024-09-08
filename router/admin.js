@@ -3,6 +3,7 @@ const router = express.Router();
 require('dotenv').config();
 const {adminModel} = require('../models/admin');
 const {productModel} = require('../models/product');
+const {categoryModel} = require('../models/category')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const validateAdmin = require('../middlewares/admin');
@@ -25,7 +26,7 @@ if(typeof process.env.NODE_ENV !== undefined && process.env.NODE_ENV === 'develo
 
         console.log(admin);
 
-        const token = jwt.sign({email: 'nav@nav.com'}, process.env.JWT_KEY)
+        const token = jwt.sign({email: 'nav@nav.com', admin: true}, process.env.JWT_KEY)
         res.cookie('token', token)
         res.send('admin created')
        } catch (error) {
@@ -53,7 +54,7 @@ router.post('/login', async (req, res) => {
         const result = await bcrypt.compare(password, admin.password);
         console.log(result);
         if(result){
-            const token = jwt.sign({email: admin.email},process.env.JWT_KEY)
+            const token = jwt.sign({email: admin.email, admin: true},process.env.JWT_KEY)
         res.cookie('token', token)
         res.redirect('/admin/dashboard')
         }else{
@@ -62,16 +63,40 @@ router.post('/login', async (req, res) => {
 
 });
 
-router.get('/dashboard',validateAdmin,(req, res) => {
-    const {prodcount,categcount} = {prodcount:'120',categcount:'5'}
+router.get('/dashboard',validateAdmin, async(req, res) => {
+    const prodcount = await productModel.countDocuments();
+    const categcount = await categoryModel.countDocuments();
     res.render('admin_dashboard',{prodcount,categcount})
 });
 
 
-router.get('/dashboard',validateAdmin, async(req, res) => {
-    const product = await productModel.find()
-    res.render('admin_products',{product})
+router.get('/products',validateAdmin, async(req, res) => {
+    const results = await productModel.aggregate([
+        {
+            // Group by 'category' and push product details to an array
+            $group: {
+                _id: "$category",
+                products: { $push: "$$ROOT" } // Add all product details
+            }
+        },
+        {
+            // Use $project to limit the number of products in each category to 10
+            $project: {
+                _id: 1,
+                products: { $slice: ["$products", 10] } // Limit to first 10 products
+            }
+        }
+    ]);
+
+    // Format the results to an object with category names as keys
+    const formattedResult = results.reduce((acc, curr) => {
+        acc[curr._id] = curr.products; // Use category name as key
+        return acc;
+    }, {});
+
+    res.render('admin_products',{products: formattedResult})
 });
+
 
 
 router.get('/logout',(req, res) => {

@@ -9,6 +9,7 @@ require("./config/google_oauth_config");
 const db = require("./config/mongoose");
 const adminRouter = require("./router/admin");
 const productRouter = require("./router/product");
+const categoriesRouter = require("./router/category");
 const cookieParser = require('cookie-parser');
 
 
@@ -33,6 +34,7 @@ app.use("/", indexRouter);
 app.use("/auth", authRouter);
 app.use("/admin", adminRouter);
 app.use("/products", productRouter);
+app.use("/categories", categoriesRouter);
 
 app.listen(3000, () =>
   console.log(`server are listening http://localhost:3000/`)
