@@ -63,11 +63,34 @@ router.post('/login', async (req, res) => {
 
 });
 
-router.get('/dashboard',validateAdmin, async(req, res) => {
-    const prodcount = await productModel.countDocuments();
-    const categcount = await categoryModel.countDocuments();
-    res.render('admin_dashboard',{prodcount,categcount})
-});
+router.get('/dashboard', validateAdmin, async (req, res) => {
+    try {
+      // Check Redis cache for product and category counts
+      const cachedProdCount = await redisClient.get('admin:prodcount');
+      const cachedCategCount = await redisClient.get('admin:categcount');
+  
+      if (cachedProdCount && cachedCategCount) {
+        console.log('Serving counts from Redis cache');
+        return res.render('admin_dashboard', {
+          prodcount: parseInt(cachedProdCount),
+          categcount: parseInt(cachedCategCount)
+        });
+      }
+  
+      // If not cached, fetch counts from the database
+      const prodcount = await productModel.countDocuments();
+      const categcount = await categoryModel.countDocuments();
+  
+      // Cache the counts in Redis with an expiration time (e.g., 60 seconds)
+      await redisClient.set('admin:prodcount', prodcount, 'EX', 60);
+      await redisClient.set('admin:categcount', categcount, 'EX', 60);
+  
+      res.render('admin_dashboard', { prodcount, categcount });
+    } catch (error) {
+      console.error('Error loading admin dashboard:', error);
+      res.send('Error loading admin dashboard');
+    }
+  });
 
 
 router.get('/products',validateAdmin, async(req, res) => {
