@@ -9,6 +9,7 @@ const { validateAdmin, userIsLoggedIn } = require('../middlewares/admin');
 const streamUpload = require('../utils/streamUpload'); // Utility function for Cloudinary upload
 const redisClient = require('../config/redisClient'); // Import Redis client from config
 
+
 // Create a new product
 router.post('/', upload.single('image'), async (req, res) => {
   try {
