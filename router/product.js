@@ -72,4 +72,8 @@ router.post('/', upload.single('image'), async (req, res) => {
   }
 });
 
+// router.get('/', async (req, res) =>{
+//   res.render('products');
+// })
+
 module.exports = router;
