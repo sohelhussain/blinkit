@@ -12,6 +12,7 @@ const productRouter = require("./router/product");
 const categoriesRouter = require("./router/category");
 const usersRouter = require("./router/user");
 const cartRouter = require("./router/cart");
+const paymentRouter = require('./router/payment');
 const cookieParser = require('cookie-parser');
 const passport = require('passport');
 
@@ -42,6 +43,7 @@ app.use("/products", productRouter);
 app.use("/categories", categoriesRouter);
 app.use("/users", usersRouter);
 app.use("/cart", cartRouter);
+app.use("/payment", paymentRouter);
 
 app.listen(3000, () =>
   console.log(`server are listening http://localhost:3000/`)
