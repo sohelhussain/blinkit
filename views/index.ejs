@@ -28,7 +28,7 @@
                     <% rnproducts.forEach(function(elem){ %>
                         <div class="flex w-32 flex-shrink-0 flex-col items-center">
                             <div class="relative">
-                                <img src="data:image/jpg;base64, <%= elem.image.toString('base64') %>"
+                                <img src="<%= elem.image %>"
                                     alt="<%= elem.name %>" class="h-24 rounded">
                             </div>
                             <p class="text-sm text-center mt-2">
@@ -84,7 +84,7 @@
                     <div class="grid grid-cols-4 gap-4 mt-4">
                         <% products[key].forEach(elem=>{ %>
                             <div class="flex flex-col items-center">
-                                <img src="data:image/jpg;base64, <%= elem.image.toString('base64') %>"
+                                <img src="<%= elem.image %>"
                                     alt="<%= elem.name %>" class="w-24 rounded">
                                 <p class="text-sm text-center mt-2">
                                     <%= elem.name %>

@@ -21,7 +21,7 @@
                 </div>
                 <% cart.forEach(elem=> { %>
                     <div class="flex items-center mt-4">
-                        <img src="data:image/jpg;base64, <%= elem.image.toString('base64') %>" alt="<%= elem.name %>"
+                        <img src="<%= elem.image %>" alt="<%= elem.name %>"
                             class="w-16 h-16 rounded">
                         <div class="ml-4">
                             <p>
@@ -55,7 +55,7 @@
                 <h2 class="text-lg font-semibold">Before you checkout</h2>
                 <div class="flex space-x-4 mt-4">
                     <div class="flex flex-col items-center">
-                        <img src="https://www.bigbasket.com/media/uploads/p/xxl/40015993_11-uncle-chips-spicy-treat.jpg"
+                        <img src="<%= elem.image %>" alt="<%= elem.name %>
                             alt="Product Image" class="h-24 rounded">
                         <p class="text-sm text-center mt-2">Uncle Chipps Spicy Treat Flavour Potato Chips</p>
                         <p class="text-xs text-gray-500">48 g</p>
@@ -63,7 +63,7 @@
                         <p class="text-xs mt-2">₹20</p>
                     </div>
                     <div class="flex flex-col items-center">
-                        <img src="https://m.media-amazon.com/images/I/61mQ-Q7HmCL._AC_UF1000,1000_QL80_.jpg"
+                        <img src="<%= elem.image %>" alt="<%= elem.name %>
                             alt="Product Image" class="h-24 rounded">
                         <p class="text-sm text-center mt-2">Coca-Cola Soft Drink (300 ml)</p>
                         <p class="text-xs text-gray-500">300 ml</p>
@@ -71,7 +71,7 @@
                         <p class="text-xs mt-2">₹40</p>
                     </div>
                     <div class="flex flex-col items-center">
-                        <img src="https://www.dorita.se/media/catalog/product/9/0/900179-lay-s-saltet-potetgull-175g.jpg"
+                        <img src="<%= elem.image %>" alt="<%= elem.name %>
                             alt="Product Image" class="h-24 rounded">
                         <p class="text-sm text-center mt-2">Chheda's Golden Banana Chips (Rock Salt)</p>
                         <p class="text-xs text-gray-500">170 g</p>
@@ -117,8 +117,7 @@
             <!-- Donation -->
             <div class="bg-white p-4 rounded-lg shadow mb-4">
                 <div class="flex items-center">
-                    <img src="https://b.zmtcdn.com/data/fi_assets/9fbf0569f69bfef7d190c5b892ab0a521619355737.png"
-                        alt="Feeding India" class="w-12 h-12 rounded">
+                    <img src="<%= elem.image %>" alt="<%= elem.name %>
                     <div class="ml-4">
                         <p class="font-semibold">Feeding India donation</p>
                         <p class="text-sm opacity-50">Working towards a malnutrition free India. Feeding India...<span
