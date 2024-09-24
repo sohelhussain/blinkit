@@ -6,4 +6,9 @@ router.get('/', (req, res) => {
    });
 
 
+router.get("/map/:orderid", function (req, res) {
+    res.render("map", { orderid: req.params.orderid });
+  });
+  
+
 module.exports = router;
